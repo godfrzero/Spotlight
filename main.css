@@ -1,0 +1,29 @@
+/* CSS Document */
+
+div.building {
+	background: #000;
+	/*border: solid thin black;*/
+	margin: 20px;
+	float: left;
+}
+
+.building.small {
+	height: 20px;
+	width: 20px;
+	border-radius: 15px;
+}
+
+.building.medium {
+	height: 80px;
+	width: 80px;
+}
+
+.building.large {
+	height: 180px;
+	width: 180px;
+}
+
+html {
+	cursor: none;
+	background: #000;
+}
