@@ -61,7 +61,7 @@ EagleEye.prototype.bottomShadowOffset = function(thisTop) {
 EagleEye.prototype.shadowIntensity = function(thisTop, thisLeft) {
 	var offset = Math.sqrt((this.origin_y - thisTop)*(this.origin_y - thisTop) + (this.origin_x - thisLeft)*(this.origin_x - thisLeft));
 	var shadowFalloff = 500;
-	return (1 - (offset / shadowFalloff)) * 1;
+	return (1 - (offset / shadowFalloff)) * 0.3;
 }
 
 EagleEye.prototype.shadowSpread = function(thisTop, thisLeft) {
@@ -112,12 +112,12 @@ jQuery(document).ready(function($){
 	elements = ($(document).height() / 100) * ($(document).width() / 100);
 	console.log(elements);
 	while(elements > 1) {
-		$('body').append('<div class="building small"></div>');
+		$('body').prepend('<div class="building small"></div>');
 		elements--;
 	}
 
 	Eagle = new EagleEye('building', false);
-	Eagle.startRender(2, 'Eagle');
+	Eagle.startRender(1, 'Eagle');
 	//Eagle.stopRenderer();
 
 	$(document).mousemove(function(e){
