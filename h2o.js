@@ -107,6 +107,15 @@ EagleEye.prototype.stopRenderer = function() {
 }
 
 jQuery(document).ready(function($){
+
+	// Preparing document by adding nodes
+	elements = ($(document).height() / 100) * ($(document).width() / 100);
+	console.log(elements);
+	while(elements > 1) {
+		$('body').append('<div class="building small"></div>');
+		elements--;
+	}
+
 	Eagle = new EagleEye('building', false);
 	Eagle.startRender(2, 'Eagle');
 	//Eagle.stopRenderer();

@@ -7,8 +7,8 @@
 	<script src="h2o.js" ></script>
 </head>
 <body>
-	<?php for($i = 0; $i < 200; $i++) { ?> 
+<!-- 	<?php for($i = 0; $i < 200; $i++) { ?> 
 		<div class="building small"></div>
-	<?php } ?>
+	<?php } ?> -->
 </body>
 </html>

@@ -3,13 +3,13 @@
 div.building {
 	background: #000;
 	/*border: solid thin black;*/
-	margin: 20px;
+	margin: 35px;
 	float: left;
 }
 
 .building.small {
-	height: 20px;
-	width: 20px;
+	height: 30px;
+	width: 30px;
 	border-radius: 15px;
 }
 
