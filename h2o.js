@@ -14,7 +14,7 @@ function EagleEye(targetClass, loggingFlag) {
 	this.origin_y = 100;
 
 	// Maximum shadow size in x or y direction
-	this.maxOffset = 20;
+	this.maxOffset = 30;
 
 	this.enableLogging = loggingFlag;
 
@@ -55,46 +55,46 @@ EagleEye.prototype.renderCycle = function(selector) {
 		var thisLeft = $(this).offset().left;
 		var thisTop = $(this).offset().top;
 
-		var leftShadowOffset = function() {	
-			var offset = -(self.origin_x - thisLeft) / self.origin_z;
-			if(self.maxOffset > Math.abs(offset)) {
-				return offset;
-			} else {
-				return ( offset > 0 ? self.maxOffset : -self.maxOffset );
-			}
-		};
-
-		var bottomShadowOffset = function() {
-			var offset = -(self.origin_y - thisTop) / self.origin_z;
-			if(self.maxOffset > Math.abs(offset)) {
-				return offset;
-			} else {
-				return ( offset > 0 ? self.maxOffset : -self.maxOffset );
-			}
-		};
-
-		var shadowSpread = function() {
-			var offset = Math.sqrt(Math.pow(self.origin_y - thisTop, 2) + Math.pow(self.origin_x - thisLeft, 2)) / 10;
-			if(self.maxOffset > offset) {
-				return offset;
-			} else {
-				return self.maxOffset;
-			}
-		}
-
-		var shadowIntensity = function() {
-			var offset = Math.sqrt(Math.pow(self.origin_y - thisTop, 2) + Math.pow(self.origin_x - thisLeft, 2));
-			var shadowFalloff = 200;
-			return (1 - (offset / shadowFalloff)) * 1;
-		}
-
-		if(Math.sqrt(Math.pow(self.origin_y - thisTop, 2) + Math.pow(self.origin_x - thisLeft, 2)) < 300) {
-			var styleString = leftShadowOffset() + 'px ' + bottomShadowOffset() + 'px ' + shadowSpread() + 'px rgba(255, 255, 255, ' + shadowIntensity() + ')'
+		if(Math.sqrt((self.origin_y - thisTop)*(self.origin_y - thisTop) + (self.origin_x - thisLeft)*(self.origin_x - thisLeft)) < 300) {
+			var styleString = self.leftShadowOffset(thisLeft) + 'px ' + self.bottomShadowOffset(thisTop) + 'px ' + self.shadowSpread(thisTop, thisLeft) + 'px rgba(255, 255, 255, ' + self.shadowIntensity(thisTop, thisLeft) + ')'
 			$(this).css('box-shadow', styleString);
 		} else {
 			$(this).css('box-shadow', 'none');
 		}
 	});
+}
+
+EagleEye.prototype.leftShadowOffset = function(thisLeft) {
+	var offset = -(this.origin_x - thisLeft) / this.origin_z;
+	if(this.maxOffset > Math.abs(offset)) {
+		return offset;
+	} else {
+		return ( offset > 0 ? this.maxOffset : -this.maxOffset );
+	}
+}
+
+EagleEye.prototype.bottomShadowOffset = function(thisTop) {
+	var offset = -(this.origin_y - thisTop) / this.origin_z;
+	if(this.maxOffset > Math.abs(offset)) {
+		return offset;
+	} else {
+		return ( offset > 0 ? this.maxOffset : -this.maxOffset );
+	}
+}
+
+EagleEye.prototype.shadowIntensity = function(thisTop, thisLeft) {
+	var offset = Math.sqrt((this.origin_y - thisTop)*(this.origin_y - thisTop) + (this.origin_x - thisLeft)*(this.origin_x - thisLeft));
+	var shadowFalloff = 200;
+	return (1 - (offset / shadowFalloff)) * 1;
+}
+
+EagleEye.prototype.shadowSpread = function(thisTop, thisLeft) {
+	var offset = Math.sqrt((this.origin_y - thisTop)*(this.origin_y - thisTop) + (this.origin_x - thisLeft)*(this.origin_x - thisLeft)) / 10;
+	if(this.maxOffset > offset) {
+		return offset + 1;
+	} else {
+		return this.maxOffset;
+	}
 }
 
 EagleEye.prototype.startRender = function(timeout, objName) {
@@ -108,7 +108,7 @@ EagleEye.prototype.stopRenderer = function() {
 
 jQuery(document).ready(function($){
 	Eagle = new EagleEye('building', false);
-	Eagle.startRender(100, 'Eagle');
+	Eagle.startRender(2, 'Eagle');
 	//Eagle.stopRenderer();
 
 	$(document).mousemove(function(e){
