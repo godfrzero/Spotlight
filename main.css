@@ -5,7 +5,17 @@ div.building {
 	/*border: solid thin black;*/
 	margin: 0;
 	float: left;
+	position: relative;
+	z-index: -10;
+/*	-webkit-transition-property: background-color;
+	-webkit-transition-duration: 10s;*/
 }
+
+/*div.building:hover {
+	-webkit-transition-property: background-color;
+	-webkit-transition-duration: 5s;
+	background: #000;	
+}*/
 
 .building.small {
 	height: 100px;
@@ -24,7 +34,7 @@ div.building {
 }
 
 html {
-	cursor: none;
+	/*cursor: none;*/
 	background: #FFF;
 }
 

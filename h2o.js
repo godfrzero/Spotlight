@@ -10,6 +10,8 @@ function EagleEye(targetClass, loggingFlag) {
 	}
 
 
+	// State 0 = stopped, 1 = rendering
+	this.state = 0;
 	this.origin_x = 100;
 	this.origin_y = 100;
 
@@ -100,10 +102,12 @@ EagleEye.prototype.renderCycle = function(selector) {
 EagleEye.prototype.startRender = function(timeout, objName) {
 	this.renderCycle(this.targetClass);
 	this.rendering = setInterval('' + objName + '.renderCycle(' + objName + '.targetClass)', timeout);
+	this.state = 1;
 }
 
 EagleEye.prototype.stopRenderer = function() {
 	clearInterval(this.rendering);
+	this.state = 0;
 }
 
 jQuery(document).ready(function($){
@@ -126,11 +130,15 @@ jQuery(document).ready(function($){
 	});
 
 	$('#PauseBtn').click(function(){
-		Eagle.stopRenderer();
+		if(Eagle.state){
+			Eagle.stopRenderer();
+		}
 	});
 
 	$('#StartBtn').click(function(){
-		Eagle.startRender(1, 'Eagle');
+		if(!Eagle.state){
+			Eagle.startRender(1, 'Eagle');
+		}
 	});
 
 });
