@@ -124,4 +124,13 @@ jQuery(document).ready(function($){
 		Eagle.origin_x = e.pageX;
 		Eagle.origin_y = e.pageY;
 	});
+
+	$('#PauseBtn').click(function(){
+		Eagle.stopRenderer();
+	});
+
+	$('#StartBtn').click(function(){
+		Eagle.startRender(1, 'Eagle');
+	});
+
 });
