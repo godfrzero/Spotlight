@@ -1,16 +1,16 @@
 /* CSS Document */
 
 div.building {
-	background: #000;
+	background: #FFF;
 	/*border: solid thin black;*/
-	margin: 35px;
+	margin: 0;
 	float: left;
 }
 
 .building.small {
-	height: 30px;
-	width: 30px;
-	border-radius: 15px;
+	height: 100px;
+	width: 100px;
+	/*border-radius: 15px;*/
 }
 
 .building.medium {
@@ -25,11 +25,13 @@ div.building {
 
 html {
 	cursor: none;
-	background: #000;
+	background: #FFF;
 }
 
 body {
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
+	margin: 0;
+	padding: 0;
 }
