@@ -43,7 +43,7 @@ EagleEye.prototype.log = function(message) {
 }
 
 EagleEye.prototype.leftShadowOffset = function(thisLeft) {
-	var offset = -(this.origin_x - thisLeft) / this.origin_z;
+	var offset = -this.getOffset(thisLeft, 0, 0) / this.origin_z;
 	if(this.maxOffset > Math.abs(offset)) {
 		return offset;
 	} else {
@@ -52,7 +52,7 @@ EagleEye.prototype.leftShadowOffset = function(thisLeft) {
 }
 
 EagleEye.prototype.bottomShadowOffset = function(thisTop) {
-	var offset = -(this.origin_y - thisTop) / this.origin_z;
+	var offset = -this.getOffset(0, thisTop, 1) / this.origin_z;
 	if(this.maxOffset > Math.abs(offset)) {
 		return offset;
 	} else {
@@ -61,17 +61,36 @@ EagleEye.prototype.bottomShadowOffset = function(thisTop) {
 }
 
 EagleEye.prototype.shadowIntensity = function(thisTop, thisLeft) {
-	var offset = Math.sqrt((this.origin_y - thisTop)*(this.origin_y - thisTop) + (this.origin_x - thisLeft)*(this.origin_x - thisLeft));
-	var shadowFalloff = 500;
+	var offset = this.getOffset(thisLeft, thisTop, 2);
+	var shadowFalloff = 300;
 	return (1 - (offset / shadowFalloff)) * 0.3;
 }
 
 EagleEye.prototype.shadowSpread = function(thisTop, thisLeft) {
-	var offset = Math.sqrt((this.origin_y - thisTop)*(this.origin_y - thisTop) + (this.origin_x - thisLeft)*(this.origin_x - thisLeft)) / 10;
+	var offset = this.getOffset(thisLeft, thisTop, 2) / 10;
 	if(this.maxOffset > offset) {
 		return offset + 1;
 	} else {
 		return this.maxOffset;
+	}
+}
+
+EagleEye.prototype.getOffset = function(thisLeft, thisTop, returnType) {
+	switch(returnType) {
+		case 0: 	var offset_x = this.origin_x - thisLeft;
+					return offset_x;
+					break;
+		case 1: 	var offset_y = this.origin_y - thisTop;
+					return offset_y;
+					break;
+		case 2: 	var offset_x = this.origin_x - thisLeft;
+					var offset_y = this.origin_y - thisTop;
+					offset_x *= offset_x;
+					offset_y *= offset_y;
+					return Math.sqrt(offset_x + offset_y);
+					break;
+		default: 	this.log('returnType not specified for offset.');
+					break;
 	}
 }
 
@@ -90,7 +109,7 @@ EagleEye.prototype.renderCycle = function(selector) {
 		var thisLeft = $(this).offset().left;
 		var thisTop = $(this).offset().top;
 
-		if(Math.sqrt((self.origin_y - thisTop)*(self.origin_y - thisTop) + (self.origin_x - thisLeft)*(self.origin_x - thisLeft)) < 500) {
+		if(self.getOffset(thisLeft, thisTop, 2) < 300) {
 			var styleString = self.leftShadowOffset(thisLeft) + 'px ' + self.bottomShadowOffset(thisTop) + 'px ' + self.shadowSpread(thisTop, thisLeft) + 'px rgba(0, 0, 0, ' + self.shadowIntensity(thisTop, thisLeft) + ')'
 			$(this).css('box-shadow', styleString);
 		} else {
@@ -114,7 +133,6 @@ jQuery(document).ready(function($){
 
 	// Preparing document by adding nodes
 	elements = ($(document).height() / 100) * ($(document).width() / 100);
-	console.log(elements);
 	while(elements > 1) {
 		$('body').prepend('<div class="building small"></div>');
 		elements--;
